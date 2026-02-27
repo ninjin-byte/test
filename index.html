@@ -44,6 +44,8 @@
     <div id="result">ここに結果が表示されます</div>
 
     <script>
+      let historyHtml = "";
+
       function classify(category) {
         const text = document.getElementById("inputText").value;
         const resultDiv = document.getElementById("result");
@@ -53,7 +55,17 @@
           return;
         }
 
-        resultDiv.innerHTML = `<strong>【${category}】</strong>として分類しました：<br>${text}`;
+        // 新しい結果をHTMLとして作成
+        const newEntry = `<p><strong>【${category}】</strong>：${text}</p>`;
+
+        // 今までの結果（historyHtml）に、新しい結果（newEntry）を「追加」する
+        historyHtml = newEntry + historyHtml;
+
+        // 画面に表示
+        resultDiv.innerHTML = historyHtml;
+
+        // 入力欄を空にする（任意）
+        document.getElementById("inputText").value = "";
       }
     </script>
   </body>
