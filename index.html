@@ -2,9 +2,59 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>最小構成</title>
+    <title>文章カテゴリーツール</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      textarea {
+        width: 100%;
+        height: 100px;
+      }
+      .buttons {
+        margin-top: 10px;
+      }
+      button {
+        padding: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+      #result {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        min-height: 50px;
+      }
+    </style>
   </head>
   <body>
-    <h1>ついに動かせたぞーー！！</h1>
+    <h1>文章カテゴリーツール</h1>
+    <p>分類したい文章を入力して、カテゴリーボタンを押してください。</p>
+
+    <textarea id="inputText" placeholder="ここに文章を入力..."></textarea>
+
+    <div class="buttons">
+      <button onclick="classify('仕事')">仕事</button>
+      <button onclick="classify('趣味')">趣味</button>
+      <button onclick="classify('学習')">学習</button>
+    </div>
+
+    <h3>結果：</h3>
+    <div id="result">ここに結果が表示されます</div>
+
+    <script>
+      function classify(category) {
+        const text = document.getElementById("inputText").value;
+        const resultDiv = document.getElementById("result");
+
+        if (text.trim() === "") {
+          resultDiv.innerText = "文章を入力してください！";
+          return;
+        }
+
+        resultDiv.innerHTML = `<strong>【${category}】</strong>として分類しました：<br>${text}`;
+      }
+    </script>
   </body>
 </html>
