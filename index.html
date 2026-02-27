@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Dashboard OS</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0f172a;
+        color: white;
+        font-family: "Inter", sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      /* ヘッダー */
+      header {
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+
+      /* 3分割レイアウト */
+      .grid-container {
+        display: grid;
+        grid-template-columns: 300px 1fr 350px; /* 左:300px 中:残り 右:350px */
+        gap: 15px;
+        padding: 15px;
+        flex-grow: 1;
+        overflow: hidden;
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .panel-header {
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        font-weight: bold;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .panel-body {
+        padding: 15px;
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+
+      /* ToDo用のスタイル */
+      .todo-item {
+        background: rgba(255, 255, 255, 0.05);
+        margin-bottom: 8px;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+      }
+
+      /* iframe(Keep用) */
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: white;
+        border-radius: 0 0 16px 16px;
+      }
+
+      .btn-auth {
+        width: 100%;
+        padding: 10px;
+        background: white;
+        color: #0f172a;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>MY PERSONAL DASHBOARD</header>
+
+    <div class="grid-container">
+      <div class="panel">
+        <div class="panel-header">✅ Google Tasks</div>
+        <div class="panel-body">
+          <div id="auth_section">
+            <button id="auth_button" class="btn-auth">Google Login</button>
+          </div>
+          <div id="main_section" style="display: none">
+            <div id="content"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">🤖 Gemini AI</div>
+        <div class="panel-body" style="background: rgba(0, 0, 0, 0.2)">
+          <p style="opacity: 0.5">[ここにチャット機能を実装予定]</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">📌 Google Keep</div>
+        <iframe src="https://keep.google.com/"></iframe>
+      </div>
+    </div>
+
+    <script
+      async
+      defer
+      src="https://apis.google.com/js/api.js"
+      onload="gapiLoaded()"
+    ></script>
+    <script
+      async
+      defer
+      src="https://accounts.google.com/gsi/client"
+      onload="gisLoaded()"
+    ></script>
+    <script>
+      // --- 以前のJavaScriptをここに貼り付け ---
+      // (CLIENT_IDのセットをお忘れなく！)
+      const CLIENT_ID =
+        "56697898706-lqaohkf2g8gmnseo8n5o67ib2gojcmih.apps.googleusercontent.com";
+      const SCOPES = "https://www.googleapis.com/auth/tasks";
+      // ... (以下、前のコードと同じ) ...
+      let tokenClient;
+      let gapiInited = false;
+      let gisInited = false;
+
+      function gapiLoaded() {
+        gapi.load("client", async () => {
+          await gapi.client.init({
+            discoveryDocs: [
+              "https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest",
+            ],
+          });
+          gapiInited = true;
+          showLoginIfReady();
+        });
+      }
+
+      function gisLoaded() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          callback: "",
+        });
+        gisInited = true;
+        showLoginIfReady();
+      }
+
+      function showLoginIfReady() {
+        if (gapiInited && gisInited) {
+          document.getElementById("auth_section").style.display = "block";
+        }
+      }
+
+      // ログイン
+      document.getElementById("auth_button").onclick = () => {
+        tokenClient.callback = async (resp) => {
+          if (resp.error !== undefined) throw resp;
+          document.getElementById("auth_section").style.display = "none";
+          document.getElementById("main_section").style.display = "block";
+          await listTasks();
+        };
+        tokenClient.requestAccessToken({ prompt: "consent" });
+      };
+
+      // タスク一覧表示
+      async function listTasks() {
+        const response = await gapi.client.tasks.tasks.list({
+          tasklist: "@default",
+          showCompleted: false,
+        });
+        const tasks = response.result.items;
+        const content = document.getElementById("content");
+        content.innerHTML = "";
+        if (tasks) {
+          tasks.forEach((task) => {
+            const item = document.createElement("div");
+            item.className = "todo-item";
+            item.innerHTML = `<div class="todo-check"></div><span>${task.title}</span>`;
+            content.appendChild(item);
+          });
+        }
+      }
+
+      // ★新規追加機能★
+      document.getElementById("add_button").onclick = async () => {
+        const title = document.getElementById("task_input").value;
+        if (!title) return;
+
+        try {
+          await gapi.client.tasks.tasks.insert({
+            tasklist: "@default",
+            resource: { title: title },
+          });
+          document.getElementById("task_input").value = ""; // 入力欄を空に
+          await listTasks(); // リストを再読み込み
+        } catch (err) {
+          alert("追加に失敗しました: " + err.message);
+        }
+      };
+
+      // ログイン成功後に、5分（300,000ミリ秒）ごとに自動更新するタイマーをセット
+      // (あまり短すぎるとGoogleから怒られるので、30秒〜1分くらいが安全です)
+      setInterval(listTasks, 60000); // 60,000ms = 1分
+
+      // ログアウト
+      document.getElementById("signout_button").onclick = () => {
+        const token = gapi.client.getToken();
+        if (token !== null) {
+          google.accounts.oauth2.revoke(token.access_token);
+          gapi.client.setToken("");
+          location.reload();
+        }
+      };
+    </script>
+  </body>
+</html>
