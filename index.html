@@ -42,6 +42,9 @@
       <button onclick="classify('仕事')">仕事</button>
       <button onclick="classify('趣味')">趣味</button>
       <button onclick="classify('学習')">学習</button>
+      <button onclick="clearLogs()" style="background-color: #ffcccc">
+        履歴をすべて消去
+      </button>
     </div>
 
     <h3>結果：</h3>
@@ -81,6 +84,14 @@
 
         // 入力欄を空にする
         document.getElementById("inputText").value = "";
+      }
+      function clearLogs() {
+        if (confirm("本当にすべての履歴を消去しますか？")) {
+          localStorage.removeItem("myLogData"); // 保存データを消す
+          historyHtml = ""; // メモリ内のデータを空にする
+          document.getElementById("result").innerHTML =
+            "ここに結果が表示されます"; // 表示を戻す
+        }
       }
     </script>
   </body>
