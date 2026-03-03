@@ -100,17 +100,21 @@
   </head>
   <body>
     <div class="container">
-      <h1>文章カテゴリツール</h1>
-      <p>分類したい文章を入力して、カテゴリーボタンを押してください。</p>
+      <h1>My Life Log</h1>
+      <p>日々の活動を記録して、ストックしていこう。</p>
 
-      <textarea id="inputText" placeholder="ここに文章を入力..."></textarea>
+      <textarea
+        id="inputText"
+        placeholder="タイトルや感想を入力してね..."
+      ></textarea>
 
       <div class="buttons">
-        <button onclick="classify('仕事')">仕事</button>
-        <button onclick="classify('趣味')">趣味</button>
-        <button onclick="classify('学習')">学習</button>
-        <button onclick="clearLogs()" style="background-color: #ffcccc">
-          履歴をすべて消去
+        <button onclick="classify('📚本')">本</button>
+        <button onclick="classify('🎬映画')">映画</button>
+        <button onclick="classify('🍴食事')">食事</button>
+        <button onclick="classify('💡雑記')">雑記</button>
+        <button onclick="clearLogs()" style="background-color: #ea4335">
+          履歴消去
         </button>
       </div>
 
