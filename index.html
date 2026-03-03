@@ -48,27 +48,38 @@
     <div id="result">ここに結果が表示されます</div>
 
     <script>
-      let historyHtml = "";
+      // 1. ページ読み込み時に、保存されているデータを取得する
+      let savedHistory = localStorage.getItem("myLogData") || "";
+      let historyHtml = savedHistory;
+
+      // 2. 最初に画面を表示した時に履歴を反映させる
+      window.onload = function () {
+        document.getElementById("result").innerHTML =
+          historyHtml || "ここに結果が表示されます";
+      };
 
       function classify(category) {
         const text = document.getElementById("inputText").value;
         const resultDiv = document.getElementById("result");
 
         if (text.trim() === "") {
-          resultDiv.innerText = "文章を入力してください！";
+          alert("文章を入力してください！");
           return;
         }
 
-        // 新しい結果をHTMLとして作成
+        // 新しい履歴を作成
         const newEntry = `<p><strong>【${category}】</strong>：${text}</p>`;
 
-        // 今までの結果（historyHtml）に、新しい結果（newEntry）を「追加」する
+        // 履歴を更新（最新が上）
         historyHtml = newEntry + historyHtml;
+
+        // 3. ブラウザにデータを保存する
+        localStorage.setItem("myLogData", historyHtml);
 
         // 画面に表示
         resultDiv.innerHTML = historyHtml;
 
-        // 入力欄を空にする（任意）
+        // 入力欄を空にする
         document.getElementById("inputText").value = "";
       }
     </script>
