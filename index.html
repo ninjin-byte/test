@@ -100,31 +100,78 @@
   </head>
   <body>
     <div class="container">
-      <header style="text-align: center; margin-bottom: 40px">
-        <h1 style="font-size: 3rem">Portfolio</h1>
-        <p>学習の記録と、開発したツールのアーカイブ</p>
+      <header
+        style="
+          text-align: center;
+          border-bottom: 2px solid #f0f2f5;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+        "
+      >
+        <h1 style="font-size: 2.5rem; color: #333">🥕 にんじん's Portfolio</h1>
+        <p style="color: #666">
+          プログラミング学習の記録と、自作ツールの置き場です。
+        </p>
+        <div style="margin-top: 10px">
+          <span
+            style="
+              background: #e8f0fe;
+              color: #1a73e8;
+              padding: 5px 10px;
+              border-radius: 20px;
+              font-size: 0.8rem;
+            "
+            >HTML / CSS</span
+          >
+          <span
+            style="
+              background: #e8f0fe;
+              color: #1a73e8;
+              padding: 5px 10px;
+              border-radius: 20px;
+              font-size: 0.8rem;
+            "
+            >JavaScript</span
+          >
+          <span
+            style="
+              background: #e8f0fe;
+              color: #1a73e8;
+              padding: 5px 10px;
+              border-radius: 20px;
+              font-size: 0.8rem;
+            "
+            >GitHub</span
+          >
+        </div>
       </header>
-      <h1>My Life Log</h1>
-      <p>日々の活動を記録して、ストックしていこう。</p>
 
-      <textarea
-        id="inputText"
-        placeholder="タイトルや感想を入力してね..."
-      ></textarea>
+      <section>
+        <h2 style="font-size: 1.2rem; color: #1a73e8; margin-bottom: 15px">
+          🚀 Project 01: My Life Log
+        </h2>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px">
+          日々の「本・映画・食事」をカテゴリー分けして保存できるツールです。
+        </p>
 
-      <div class="buttons">
-        <button onclick="classify('📚本')">本</button>
-        <button onclick="classify('🎬映画')">映画</button>
-        <button onclick="classify('🍴食事')">食事</button>
-        <button onclick="classify('💡雑記')">雑記</button>
-        <button onclick="clearLogs()" style="background-color: #ea4335">
-          履歴消去
-        </button>
-      </div>
+        <textarea
+          id="inputText"
+          placeholder="今日の記録をここに入力..."
+        ></textarea>
 
-      <h3>結果：</h3>
-      <div id="result">ここに結果が表示されます</div>
+        <div class="buttons">
+          <button onclick="classify('📚 本')">本</button>
+          <button onclick="classify('🎬 映画')">映画</button>
+          <button onclick="classify('🍴 食事')">食事</button>
+          <button onclick="classify('📝 雑記')">雑記</button>
+          <button onclick="clearLogs()">履歴消去</button>
+        </div>
+
+        <h3 style="font-size: 1rem; margin-top: 30px">Timeline：</h3>
+        <div id="result">ここに結果が表示されます</div>
+      </section>
     </div>
+
     <script>
       // 1. ページ読み込み時に、保存されているデータを取得する
       let savedHistory = localStorage.getItem("myLogData") || "";
