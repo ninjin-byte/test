@@ -96,80 +96,93 @@
       #result p:last-child {
         border-bottom: none;
       }
+
+      /* プロジェクトを囲む枠（カード）のスタイル */
+      .project-card {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        transition: box-shadow 0.3s;
+      }
+
+      .project-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* マウスを乗せると少し浮く */
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        margin: 40px 0 20px;
+        border-left: 5px solid #ff9800; /* にんじんカラーのオレンジ */
+        padding-left: 15px;
+      }
+
+      .skill-tag {
+        display: inline-block;
+        background: #fff3e0;
+        color: #e65100;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        margin-right: 8px;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <header
-        style="
-          text-align: center;
-          border-bottom: 2px solid #f0f2f5;
-          margin-bottom: 30px;
-          padding-bottom: 20px;
-        "
-      >
+      <header style="text-align: center; margin-bottom: 50px">
         <h1 style="font-size: 2.5rem; color: #333">🥕 にんじん's Portfolio</h1>
-        <p style="color: #666">
-          プログラミング学習の記録と、自作ツールの置き場です。
+        <p style="font-size: 1.1rem; color: #666">
+          こんにちは、にんじんのページです。
         </p>
-        <div style="margin-top: 10px">
-          <span
-            style="
-              background: #e8f0fe;
-              color: #1a73e8;
-              padding: 5px 10px;
-              border-radius: 20px;
-              font-size: 0.8rem;
-            "
-            >HTML / CSS</span
-          >
-          <span
-            style="
-              background: #e8f0fe;
-              color: #1a73e8;
-              padding: 5px 10px;
-              border-radius: 20px;
-              font-size: 0.8rem;
-            "
-            >JavaScript</span
-          >
-          <span
-            style="
-              background: #e8f0fe;
-              color: #1a73e8;
-              padding: 5px 10px;
-              border-radius: 20px;
-              font-size: 0.8rem;
-            "
-            >GitHub</span
-          >
+
+        <div style="margin-top: 20px">
+          <h3 style="font-size: 1rem; color: #999; text-transform: uppercase">
+            Skills
+          </h3>
+          <span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS3</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">GitHub</span>
         </div>
       </header>
 
-      <section>
-        <h2 style="font-size: 1.2rem; color: #1a73e8; margin-bottom: 15px">
+      <h2 class="section-title">Works</h2>
+
+      <div class="project-card">
+        <h3 style="margin-top: 0; color: #1a73e8">
           🚀 Project 01: My Life Log
-        </h2>
-        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px">
-          日々の「本・映画・食事」をカテゴリー分けして保存できるツールです。
+        </h3>
+        <p style="color: #666; font-size: 0.9rem">
+          日々の活動を記録する自分専用ツールです。
         </p>
 
-        <textarea
-          id="inputText"
-          placeholder="今日の記録をここに入力..."
-        ></textarea>
-
+        <textarea id="inputText" placeholder="今日の出来事を入力..."></textarea>
         <div class="buttons">
           <button onclick="classify('📚 本')">本</button>
           <button onclick="classify('🎬 映画')">映画</button>
           <button onclick="classify('🍴 食事')">食事</button>
-          <button onclick="classify('📝 雑記')">雑記</button>
           <button onclick="clearLogs()">履歴消去</button>
         </div>
 
-        <h3 style="font-size: 1rem; margin-top: 30px">Timeline：</h3>
-        <div id="result">ここに結果が表示されます</div>
-      </section>
+        <h4 style="margin-top: 20px; font-size: 0.9rem; color: #333">
+          Timeline:
+        </h4>
+        <div id="result" style="max-height: 300px; overflow-y: auto">
+          ここに結果が表示されます
+        </div>
+      </div>
+
+      <div class="project-card" style="border-style: dashed; opacity: 0.6">
+        <h3 style="margin-top: 0; color: #999">
+          ⌛ Project 02: Coming Soon...
+        </h3>
+        <p style="color: #999; font-size: 0.9rem">
+          次はAPIを使ったツールを作成予定です。
+        </p>
+      </div>
     </div>
 
     <script>
